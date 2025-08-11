@@ -7,3 +7,6 @@ pypdf
 PyPDF2
 python-docx
 PyMuPDF
+llama-index-llms-gemini
+llama-index-embeddings-gemini
+
