@@ -1,0 +1,286 @@
+Beginner (0 → ~3 months) — Foundation & velocity
+Goal: learn Python syntax, core libraries, basic tooling, and ship small projects.
+
+Core skills
+Python syntax & REPL: variables, types, control flow, functions, modules.
+
+Built-in data structures: list, tuple, set, dict.
+
+I/O & file handling: open, context managers (with).
+
+Basic OOP: classes, __init__, methods, simple inheritance.
+
+Exceptions: try/except/finally.
+
+Standard library essentials: os, sys, pathlib, json, datetime, collections, itertools.
+
+Virtual environments: python -m venv venv and activating it.
+
+pip + requirements.txt (installing packages).
+
+Basic Git workflows (clone → branch → commit → PR).
+
+Readability & style: PEP8 basics — use black and flake8.
+
+Recommended timeline
+Weeks 1–2: syntax, types, and small scripts (calculator, file parser).
+
+Weeks 3–4: functions, modules, OOP basics — write small classes.
+
+Weeks 5–8: standard library, virtualenv, pip, basic package use (requests).
+
+Weeks 9–12: one polished project + GitHub repo + README.
+
+Starter projects (build & deploy)
+Project A: CLI TODO app
+
+Features: add/list/remove tasks, save to JSON file, mark as done.
+
+Milestones: basic CLI → tests → help/usage docs.
+
+Project B: File processor
+
+Read CSV/JSON, transform data, write output.
+
+Milestones: parsing → validation → small CLI options (argparse).
+
+Tools & commands you’ll use
+bash
+Copy
+Edit
+python -m venv venv
+source venv/bin/activate   # or venv\Scripts\activate on Windows
+pip install requests
+pip freeze > requirements.txt
+Testing:
+
+bash
+Copy
+Edit
+pip install pytest
+pytest
+Beginner checklist (what “done” looks like)
+Use virtualenv for projects.
+
+Repo with README, license, simple tests.
+
+Able to debug with print & basic pdb.
+
+Understand basic Git and push a PR.
+
+Intermediate (3 → 12 months) — Real apps, good practices, and tooling
+Goal: build web apps / APIs, write clean tests, use databases, and operate local dev workflows.
+
+Core skills
+Web frameworks: Flask (micro) or FastAPI (async-first) or Django (full-stack).
+
+HTTP & web fundamentals: status codes, headers, query params, REST principles.
+
+Databases: SQL basics, use PostgreSQL (psycopg / SQLAlchemy), simple migrations (Alembic).
+
+ORMs: SQLAlchemy (core/ORM) or Django ORM.
+
+Asynchronous Python: async/await basics, asyncio event loop; when to use async.
+
+Packaging & dependency management: pyproject.toml, poetry (or pip + requirements).
+
+Testing: pytest with fixtures, mocking, integration tests.
+
+Logging & config: structured logging (logging), environment config patterns (12-factor).
+
+APIs: design REST endpoints, return JSON, input validation (pydantic for FastAPI).
+
+Docker basics: Dockerfile for app, container run/test.
+
+CI basics: GitHub Actions or similar to run tests and lint on PRs.
+
+Type hints: start adding typing annotations, run mypy optionally.
+
+Security basics: avoid pickle on untrusted data, sanitize inputs, simple auth flows.
+
+Intermediate projects (purposeful & deployable)
+Project C: URL Shortener (Flask/FastAPI + Postgres)
+
+Features: create short links, redirect, simple analytics (click count).
+
+Milestones: API endpoints → DB schema → tests → Dockerfile → deploy to Heroku/Vercel-compatible backend.
+
+Project D: Task manager with Web UI
+
+Full-stack: React or plain HTML + server templates (Django), API for tasks, authentication.
+
+Milestones: server API → client UI → secure auth (JWT/session) → file uploads.
+
+Dev & infra skills
+Docker commands: docker build -t app ., docker run -p 8000:8000 app.
+
+Local Postgres with Docker: docker run -e POSTGRES_PASSWORD=pass -p 5432:5432 postgres.
+
+CI pipeline: automatically run tests, lint, build docker image on PR.
+
+Testing strategy
+Unit tests for pure functions.
+
+Integration tests for DB/API (use test DB or fixtures).
+
+Write a small set of E2E tests with Playwright or simple curl checks.
+
+Intermediate checklist
+Projects have tests with CI passing.
+
+App can be containerized and deployed.
+
+Typing introduced in core modules.
+
+Basic async knowledge and when not to use it.
+
+Advanced (12 months → years) — Production, scale, architecture & performance
+Goal: design secure, scalable systems; optimize performance; mentor others and own design decisions.
+
+Core skills & deep topics
+Advanced Python internals: memory model, reference counting, garbage collection (gc), how the GIL works and implications.
+
+Performance: profiling (cProfile, py-spy), optimizing hot paths, using asyncio effectively, batching I/O, connection pooling.
+
+Concurrency & parallelism: threads vs processes vs asyncio vs worker pools; concurrent.futures and multiprocessing; worker systems (Celery, RQ).
+
+C extensions & speedups: Cython, Numba, writing CPython extensions, or using Rust with PyO3 for critical code.
+
+Type system mastery: large-codebase typing strategies, generics, typing patterns, gradual typing tradeoffs.
+
+Advanced packaging & distribution: publish packages to PyPI, build wheels, use auditwheel/manylinux.
+
+Observability & SRE practices: distributed tracing (OpenTelemetry), metrics (Prometheus), log aggregation, structured logs, dashboards & alerts.
+
+Security at scale: threat modeling, OWASP mitigation, secrets management, dependency scanning in CI.
+
+Systems design with Python: microservices, event-driven architectures, idempotency, retries/backoff, data contracts.
+
+Cloud & infra: Kubernetes, autoscaling, managed DBs, serverless patterns (Lambda with containers, API Gateway).
+
+Data engineering & ML ops (optional but valuable): streaming (Kafka), ETL pipelines, data versioning (DVC), model serving (TorchServe/TF Serving), inference scaling.
+
+Architectural leadership: API design at scale, multi-team contracts, migration strategies, rollout patterns (canary, blue/green).
+
+Advanced projects (impactful & portfolio-grade)
+Project E: Scalable event-driven service
+
+Ingest stream (Kafka), process messages with idempotency guarantees, store to DB, expose metrics & tracing.
+
+Milestones: local dev stack with Docker Compose → worker autoscaling → tracing setup → deployment to k8s cluster.
+
+Project F: Production ML inference pipeline
+
+Train small model locally, wrap as API with batching and caching, measure latency, deploy to serverless or k8s, add monitoring for model drift.
+
+Project G: Build & publish a Python library
+
+Proper packaging, CI for tests & publishing, documentation, semantic versioning, and maintainability.
+
+Tools & infra
+Kubernetes basics: manifests, deployments, services, ingress, secrets, configmaps.
+
+CI/CD best practices: build pipelines, artifact immutability, automated canary rollouts.
+
+Observability stack: Prometheus/Grafana, Loki/ELK for logs, Jaeger for traces.
+
+Security & compliance tooling: SAST, SCA, secret scanning.
+
+Advanced checklist (what excellence looks like)
+Able to profile and reduce 99th percentile latency by >X% (measure baseline).
+
+Designs services with clear contracts, retries, backpressure handling.
+
+Production-grade deployment: CI/CD, rollbacks, monitoring, runbooks.
+
+Mentoring & code review culture: enforce testing, help design docs, drive architecture decisions.
+
+Cross-cutting best practices (all levels)
+Write tests early. Tests reduce fear of change.
+
+Automate everything: CI runs tests & linters, deploys on merge, and checks security.
+
+Use type hints progressively — they help with refactors.
+
+Model & log metrics: collect basic app metrics (request latency, error rate) from day one.
+
+Keep secrets secret: never commit creds; use env vars or secret managers.
+
+Document assumptions: README, API docs (OpenAPI), design decisions, and migration notes.
+
+Interview & hiring checklist (by level)
+Beginner: explain basic constructs, write a function confidently, use lists/dicts, basics of OOP, simple unit test.
+
+Intermediate: design a REST endpoint, SQL joins, ORM tradeoffs, containerize an app, write pytest tests, basic async knowledge.
+
+Advanced: system design for scale, profiling and performance fixes, concurrency traps (GIL), distributed tracing, security threat modeling.
+
+Learning paths & sample 6/12/24-month plan (concise)
+6-month focused plan (if you can devote ~10–15 hrs/week)
+Months 0–1: Python basics + CLI tools + small scripts.
+
+Months 2–3: Web dev with Flask or FastAPI; DB integration; build & deploy one app.
+
+Months 4–5: Docker + CI + unit/integration tests + some async patterns.
+
+Month 6: Build a production-ready project with monitoring & a README showing architecture.
+
+12-month mastery plan
+First 6 months as above.
+
+Months 7–9: Advanced architecture (message queues, caching), optimizations & profiling.
+
+Months 10–12: Kubernetes basics, package a library, publish to PyPI, add SLOs/observability.
+
+24-month to senior-level
+Beyond 12 months: design cross-service systems, lead a migration, drive infra work (CI/CD/k8s), mentor team, write design docs, and measure business impact.
+
+Concrete project roadmap example: “TaskFlow” (from beginner → advanced)
+Phase 1 (Beginner): CLI Taskflow app
+
+CRUD tasks, save JSON, simple tests.
+
+Phase 2 (Intermediate): Web Taskflow
+
+FastAPI backend + SQLite/Postgres, React frontend, JWT auth, Dockerfile, CI pipeline.
+
+Phase 3 (Advanced): Scalable Taskflow
+
+Migrate DB to Postgres with replicas, add Celery worker for heavy jobs, Kafka for events, Kubernetes deployment, Prometheus metrics, tracing with OpenTelemetry, automated canary deployment.
+
+At each phase, add measurable acceptance criteria (tests passing, LCP < X, error rate < Y).
+
+Common pitfalls & how to avoid them
+Premature optimization: measure first (profile), then optimize.
+
+Ignoring tests: leads to brittle code. Automate tests in CI.
+
+N+1 DB queries: watch ORM patterns; use joins/batch queries.
+
+Blocking I/O in async code: don’t call blocking libs in async loop (use threadpool or async equivalents).
+
+Unbounded memory/growth: set limits, watch queues, and monitor heap.
+
+Poor observability: instrument basic metrics and errors from day one.
+
+Books & resources (recommended)
+Automate the Boring Stuff — practical beginner projects.
+
+Fluent Python — deeper language mastery.
+
+Effective Python — pragmatic patterns.
+
+Designing Data-Intensive Applications — system design (non-Python specific but essential).
+
+Official Python docs & PEPs for language changes.
+
+Online: Real Python, Full Stack Python, official FastAPI/Flask/Django docs.
+
+Final practical advice (from the viewpoint of an experienced coach)
+Ship and measure. Build small things and put them in front of users — feedback accelerates learning.
+
+Work on code you care about (your own projects or OSS) — ownership teaches operational realities.
+
+Write READMEs & postmortems. Explaining failures teaches more than success.
+
+Invest in fundamentals first. Understand algorithms, networking basics, and databases — frameworks change, fundamentals do not.

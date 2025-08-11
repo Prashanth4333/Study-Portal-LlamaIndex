@@ -1,0 +1,372 @@
+Overview — what this roadmap gives you
+Clear skills by level (what to learn and why)
+
+Tooling and libraries to master (SQL, Python, BI tools, cloud)
+
+Projects to build at each level with measurable deliverables
+
+Timelines and study plans (12-week, 6-month)
+
+Interview checklist and typical questions
+
+Career paths and soft skills: storytelling, domain knowledge, stakeholder work
+
+Beginner (0 → ~3 months) — foundations & velocity
+Goal: read & wrangle data, make useful charts, answer simple business questions.
+
+Core concepts & why they matter
+Data literacy: types (numerical, categorical, datetime), missingness, outliers.
+
+Statistics basics: mean/median/mode, variance/std, percentiles, correlation vs causation.
+
+SQL fundamentals: SELECT, WHERE, GROUP BY, JOINs — used for most data slicing.
+
+Spreadsheets skills (Excel/Google Sheets): filters, pivot tables, basic formulas — quick exploration & prototyping.
+
+Basic visualization: bar charts, line charts, histograms — communicate insights.
+
+Tools & libraries to learn now
+SQL engine: PostgreSQL (local) or any cloud workspace (you can start with SQLite or DuckDB).
+
+Python: core libraries — pandas, numpy, matplotlib/seaborn (or plotly for interactivity).
+
+Notebook: Jupyter or VS Code notebooks.
+
+Spreadsheet: Excel or Google Sheets.
+
+Version control: basic Git (commit, branch, push).
+
+Concrete beginner checklist
+Write SQL queries with joins and group-by aggregations.
+
+Load CSV into pandas and do basic cleaning (dropna, fillna, type conversion).
+
+Create simple charts and export them for a report.
+
+Save reproducible analysis in a notebook with explanations.
+
+Small projects (week-by-week)
+Data exploration notebook: pick a public dataset (Kaggle, UCI), produce EDA: missing value table, histograms, correlation heatmap, and 5 key insights.
+
+Sales pivot analysis (spreadsheet + SQL): monthly revenue by region, top products, simple cohort analysis (month of first purchase).
+
+Mini dashboard (static): create a PDF or HTML report with charts and short recommendations.
+
+Example snippets
+SQL — Sales by product category (Postgres style)
+sql
+Copy
+Edit
+SELECT category, 
+       COUNT(*) AS orders,
+       SUM(amount) AS revenue,
+       AVG(amount) AS avg_order
+FROM orders o
+JOIN products p ON o.product_id = p.id
+WHERE o.order_date >= '2024-01-01'
+GROUP BY category
+ORDER BY revenue DESC;
+pandas — basic EDA
+python
+Copy
+Edit
+import pandas as pd
+df = pd.read_csv("sales.csv", parse_dates=["order_date"])
+print(df.info())
+print(df.describe())
+# missingness
+missing = df.isna().mean().sort_values(ascending=False)
+Intermediate (3 → 12 months) — production-ready analytics & automation
+Goal: build repeatable pipelines, automated reports, dashboards, and work with real data stores.
+
+Core skills & why
+Advanced SQL: window functions, CTEs, subqueries, performance (indexes, explain plan). Essential for complex analytics.
+
+Data modeling: star schema, slowly changing dimensions, event tables vs dimension tables. This lets you build reliable analytics models.
+
+ETL/ELT basics: data ingestion, cleaning, transformation, scheduling jobs (cron / Airflow). Automate repetitive tasks.
+
+Python data engineering: pandas at scale, polars (fast alternative), using database connectors, batching, and robust scripts.
+
+Visualization & BI: Tableau or Power BI (or Looker / Superset). Build interactive dashboards with filters, drill-downs, and KPIs.
+
+Metrics & instrumentation: define metrics (DAU/MAU, churn), understand event instrumentation and analytic events.
+
+Experimentation basics: A/B testing concepts, significance, power, common pitfalls.
+
+Basic statistics & regression: hypothesis testing, confidence intervals, linear regression for trend analysis.
+
+Tools & platforms
+DBs: PostgreSQL, BigQuery, Redshift (learn at least one cloud DW).
+
+ETL orchestration: Airflow (core concepts), Prefect, or cron jobs for simple pipelines.
+
+BI tools: Tableau, Power BI, Looker — build production dashboards.
+
+Versioning: Git + data versioning basics (DVC) or maintaining raw/reprocessed data snapshots.
+
+Containerization (optional): basic Docker for reproducible runs.
+
+Intermediate project ideas (deliverables)
+Automated weekly sales dashboard
+
+Data ingestion script (CSV / API) → staging table → transform (SQL or Python) → publish to BI tool.
+
+Deliverable: working dashboard with filters and automated email summary job.
+
+Cohort analysis & retention model
+
+Implement cohort definitions in SQL, compute retention curves, produce an executive summary with recommended actions.
+
+A/B test analysis pipeline
+
+Ingest experiment events, compute variant metrics, apply statistical test, produce readout table and decision recommendation.
+
+Key concepts to master with examples
+Window functions (SQL) e.g., running totals:
+
+sql
+Copy
+Edit
+SELECT order_date,
+       SUM(amount) OVER (ORDER BY order_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_revenue
+FROM orders;
+CTE for modular SQL
+
+sql
+Copy
+Edit
+WITH daily AS (
+  SELECT date_trunc('day', order_date) AS day, sum(amount) AS revenue
+  FROM orders
+  GROUP BY 1
+)
+SELECT day, revenue, LAG(revenue) OVER (ORDER BY day) AS prev_day
+FROM daily;
+Intermediate checklist
+Build at least one automated ETL pipeline with tests.
+
+Publish and maintain a BI dashboard used by stakeholders.
+
+Deliver A/B test analyses with correct hypothesis testing and power considerations.
+
+Know how to explain metric definitions and potential bias (e.g., sample leakage).
+
+Advanced (12+ months → years) — strategic analytics, systems, and leadership
+Goal: architect data solutions, influence product with data, ensure data quality and governance, mentor others.
+
+Advanced competencies
+Data architecture & warehousing
+
+Dimensional modeling (facts/dimensions), partitioning strategies, incremental ingestion, auditability.
+
+Cloud DW mastery: BigQuery / Redshift / Snowflake — cost control, partition pruning, slots/compute management.
+
+Advanced ETL & streaming
+
+Batch vs streaming (Kafka, Kinesis), CDC patterns (Debezium), idempotent pipelines, schema evolution.
+
+Data quality & governance
+
+Data contracts, lineage, observability (Great Expectations), monitoring alerts, ownership model.
+
+Performance & optimization
+
+SQL tuning, query plan analysis, index strategy, materialized views, caching layers.
+
+Advanced analytics & ML basics
+
+Time-series forecasting, uplift modeling, survival analysis, propensity models. Not full ML engineer, but be able to prototype and validate models.
+
+Causal inference
+
+Difference-in-differences, instrumental variables, regression discontinuity for product/marketing causal questions.
+
+Experimentation at scale
+
+Experiment design for complex products, sequential testing, controlling for multiple comparisons.
+
+Data product thinking
+
+Packaging insights as repeatable products: real-time alerts, feature stores for ML, internal APIs.
+
+Tools & infrastructure
+Orchestration & infra: Airflow DAG patterns, Kubernetes basics for scalable pipelines, Terraform for infra as code.
+
+Monitoring & observability: Datadog, Prometheus/Grafana, Sentry; set up data quality dashboards.
+
+MLOps basics: Model serving patterns, feature stores, model monitoring for data drift (Evidently).
+
+Privacy & security: PII detection, masking, consent/retention policies.
+
+Advanced project ideas
+Enterprise analytics platform
+
+Build global dimensional model, central ETL pipeline, standard set of canonical metrics + access controls.
+
+Implement lineage and data quality checks; onboard 3 teams to use it.
+
+Real-time alerting system
+
+Streaming ingestion of events, materialize near-real-time metrics, trigger alerts on anomaly detection.
+
+Causal impact study
+
+Design and execute a robust causal analysis (instrumental variable or DiD) for a major feature rollout.
+
+Leadership & soft skills
+Data storytelling: lead cross-team presentations, craft narratives with executive summaries.
+
+Stakeholder management: align on metric definitions, SLAs for data delivery, and prioritization.
+
+Mentoring & hiring: interview frameworks for analysts, run bootcamps, establish onboarding docs.
+
+Advanced checklist
+Own the analytics roadmap for a product area.
+
+Implement governance: data catalog, lineage, DQ alerts.
+
+Mentor junior analysts; improve team processes (review, documentation, standard SQL patterns).
+
+Cross-cutting skills (applies at all levels)
+Communication & storytelling: write one-page executive summaries, present clear visuals, recommend actions (not just numbers).
+
+Reproducibility: notebooks should run end-to-end; parametrize and script. Use requirements.txt or poetry.
+
+Testing for analytics: unit tests for SQL (dbt tests or SQLUnit), data validation (Great Expectations), CI for pipelines.
+
+Documentation: metric catalog, data dictionary, onboarding guides.
+
+Ethics & privacy: be aware of biases, PII concerns, GDPR/CCPA implications.
+
+Sample study plans
+12-week intensive plan (10–15 hrs/week)
+Weeks 1–2: Python basics + pandas; do EDA on a dataset.
+
+Weeks 3–4: SQL fundamentals + joins, group by, window functions.
+
+Weeks 5–6: Data modeling basics + build simple ETL (Python -> DB).
+
+Weeks 7–8: BI tool deep dive (Tableau/Power BI) – build dashboards.
+
+Weeks 9–10: A/B testing & stats basics; analyze a sample experiment.
+
+Weeks 11–12: Build deployable project with scheduled ETL and dashboard; write README and present insights.
+
+6-month plan (part-time)
+Months 1–2: Beginner + intermediate foundations (SQL + pandas + viz).
+
+Months 3–4: ETL orchestration and BI dashboards; automate pipeline.
+
+Months 5–6: Learn cloud data warehousing (BigQuery/Snowflake), data quality, and one advanced analytics area (causal or forecasting). Build capstone.
+
+Portfolio & interview preparation
+What to show in your portfolio
+3–6 polished projects with: problem statement, data source, methods, results, dashboard/screenshots, code (clean repo), and live demo if possible.
+
+A canonical SQL file or notebook per project that reproduces the key result.
+
+A metrics catalog or documentation page showing metric definitions used.
+
+Typical interview tasks / questions
+SQL challenge: write a query to compute rolling 7-day retention, or find top cohorts.
+
+Case study: given product data, find 3 growth levers and present how to measure them.
+
+Python task: clean dataset and produce a specific aggregated CSV.
+
+Stats question: interpret p-value, type I/II errors, power, and what to do when test fails.
+
+Dashboard critique: given a mock dashboard, identify issues and propose improvements.
+
+Example interview SQL prompt & solution sketch
+Prompt: Compute 7-day rolling retention: fraction of users who return within 7 days of first session.
+
+sql
+Copy
+Edit
+WITH first AS (
+  SELECT user_id, MIN(session_date) AS first_date
+  FROM sessions
+  GROUP BY user_id
+),
+joined AS (
+  SELECT f.user_id, f.first_date, s.session_date
+  FROM first f
+  LEFT JOIN sessions s ON s.user_id = f.user_id
+)
+SELECT first_date,
+       COUNT(DISTINCT CASE WHEN session_date <= first_date + INTERVAL '7 days' THEN joined.user_id END)::float / COUNT(DISTINCT joined.user_id) AS retention_7d
+FROM joined
+GROUP BY first_date
+ORDER BY first_date;
+Common pitfalls & how to avoid them
+Undefined metrics: always have a single source-of-truth definition.
+
+Data leakage: be careful with time-based splits and look-ahead bias.
+
+Overreliance on p-values: check effect sizes and business significance.
+
+Bad instrumentation: poorly defined event taxonomy leads to broken analytics.
+
+Not validating upstream changes: schema drift breaks pipelines — add monitoring & alerts.
+
+Tool cheat-sheet & commands
+Python environment
+bash
+Copy
+Edit
+python -m venv venv
+source venv/bin/activate
+pip install pandas numpy jupyterlab sqlalchemy psycopg2-binary
+jupyter lab
+Dockerize a simple ETL job
+Dockerfile (simple)
+
+dockerfile
+Copy
+Edit
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "etl.py"]
+Quick DB connection example (SQLAlchemy + pandas)
+python
+Copy
+Edit
+from sqlalchemy import create_engine
+engine = create_engine("postgresql://user:pass@localhost:5432/dbname")
+df = pd.read_sql("SELECT * FROM orders LIMIT 1000", engine)
+Recommended books & learning resources
+Python for Data Analysis — Wes McKinney (pandas masterclass).
+
+Storytelling with Data — Cole Nussbaumer Knaflic (visualization & communication).
+
+Practical Statistics for Data Scientists — for the statistics toolkit.
+
+Courses: Coursera / DataCamp / Udacity (SQL, analytics, A/B testing).
+
+Tools docs: pandas, dbt (analytics engineering), Airflow, Tableau/Power BI.
+
+Career paths & roles
+Entry: Junior Data Analyst / Reporting Analyst
+
+Mid: Data Analyst / Analytics Engineer / Product Analyst
+
+Senior: Senior Data Analyst / Analytics Engineer / Data Scientist (if you gain ML depth)
+
+Leadership: Analytics Manager, Head of Analytics, Chief Data Officer (requires domain + leadership skill growth)
+
+Final advice (from an experienced perspective)
+Be outcome-driven. Start every analysis with: “What decision will this support?” — not: “what can I compute?”
+
+Automate repeatable work. Manual Excel manipulations are temporary; build a script or pipeline.
+
+Over-communicate results. Summaries + 1–2 visuals + recommended action = success.
+
+Invest in instrumentation. Good metrics and events are the analyst’s best tool.
+
+Keep learning: data tools evolve — focus on concepts (causality, modeling, engineering) that transfer.
+

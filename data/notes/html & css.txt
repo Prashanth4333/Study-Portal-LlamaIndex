@@ -1,0 +1,583 @@
+HTML & CSS — Complete Notes
+Overview (short)
+
+HTML (HyperText Markup Language) — the structure and semantic content of web pages: headings, paragraphs, lists, links, images, forms, sections, etc.
+
+CSS (Cascading Style Sheets) — the presentation: layout, colors, typography, responsive behavior, animations.
+Together they form the front-end foundation for web pages (HTML = semantics/content; CSS = visual layer).
+
+Contents (what’s inside these notes)
+
+HTML fundamentals & document anatomy
+
+Semantic HTML & accessibility (a11y)
+
+Common HTML elements (text, lists, images, media, links, forms)
+
+Metadata, SEO basics & social meta tags
+
+CSS fundamentals: syntax, cascade, specificity, box model
+
+Selectors & combinators, pseudo-classes/elements
+
+Layout: display types, floats (legacy), Flexbox, Grid, positioning
+
+Responsive design, media queries, images, & responsive typography
+
+Styling techniques: variables, functions, units, color systems
+
+Transitions, transforms, animations, and performance tips
+
+Forms styling, validation & progressive enhancement
+
+Accessibility best practices (keyboard, ARIA, focus, contrast)
+
+Tools & workflows: preprocessors, build tools, linters, dev tools
+
+Performance & optimisation checklist (critical CSS, fonts, images)
+
+CSS architectures & naming conventions (BEM, OOCSS, Atomic, Utility-first)
+
+Example project (HTML + CSS skeleton + responsive layout)
+
+Learning resources & next steps
+
+1 — HTML fundamentals & document anatomy
+
+Minimal valid HTML5 document:
+
+html
+Copy
+Edit
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Page Title</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- content -->
+</body>
+</html>
+<!doctype html> — triggers standards mode (HTML5).
+
+<html lang="xx"> — set language for accessibility & search engines.
+
+<meta charset="utf-8"> — character encoding.
+
+<meta name="viewport" ...> — essential for responsive on mobile.
+
+<title> — required for SEO and browser tabs.
+
+<link rel="stylesheet"> and <script src=""> for external resources.
+
+2 — Semantic HTML & accessibility (why it matters)
+
+Semantic tags (e.g., <header>, <nav>, <main>, <article>, <section>, <aside>, <footer>) improve:
+
+Machine readability (search engines),
+
+Accessibility (screen readers),
+
+Maintainability and developer clarity.
+
+Use headings <h1>→<h6> in a hierarchical order (don’t skip levels arbitrarily).
+
+Landmark regions allow screen readers / AT to navigate (e.g., <main>, <nav>).
+
+Prefer semantic tags over generic <div>s where possible.
+
+3 — Common HTML elements (quick catalog)
+
+Text content: <p>, <h1>…<h6>, <blockquote>, <cite>, <q>, <small>, <strong>, <em>, <mark>.
+
+Inline vs block: <span> (inline) vs <div> (block).
+
+Links: <a href="..."> — use rel="noopener noreferrer" on external links opened in new tabs (target="_blank").
+
+Lists: <ul>, <ol>, <li>.
+
+Images & responsive images:
+
+Basic: <img src="photo.jpg" alt="description"> — ALWAYS include meaningful alt.
+
+Srcset/picture (responsive): use srcset/sizes or <picture> with <source media=...> to serve different images per viewport/resolution.
+
+Media: <audio>, <video>, with controls, autoplay (be careful), preload, muted.
+
+Tables: <table>, <thead>, <tbody>, <tfoot>, <tr>, <th>, <td> — use for tabular data only. Include captions and summaries where helpful.
+
+Forms: <form>, <input>, <textarea>, <select>, <label>, <button>, input types (email, tel, url, number, date, search, file, password, etc.). Use <label for="id"> or wrap <input> inside <label>.
+
+4 — Metadata, SEO basics & social meta tags
+
+Important meta tags:
+
+meta name="description" content="..." — short page summary.
+
+link rel="canonical" href="..." — canonical URL to prevent duplicate content issues.
+
+Social/Open Graph (example):
+
+html
+Copy
+Edit
+<meta property="og:title" content="Page title">
+<meta property="og:description" content="Short description">
+<meta property="og:image" content="https://example.com/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+Robots & indexing: meta name="robots" content="index,follow" or use noindex for dev pages.
+
+Structured data (JSON-LD) can help SERPs: embed application/ld+json for recipes, articles, events.
+
+5 — CSS fundamentals: syntax, cascade, specificity, box model
+
+CSS syntax: selector { property: value; }
+
+Cascade & source order: later rules override earlier ones of same specificity.
+
+Specificity basics:
+
+Inline styles = highest (e.g., style="...")
+
+IDs #id (100) > classes .class / attributes [attr] / pseudo-classes :hover (10) > element selectors div / pseudo-elements ::before (1)
+
+!important overrides specificity — avoid it except for emergencies.
+
+Box model:
+
+content → padding → border → margin.
+
+box-sizing: border-box; is recommended (makes width include padding + border).
+
+css
+Copy
+Edit
+* { box-sizing: border-box; }
+6 — Selectors & combinators, pseudo-classes/elements
+
+Basic selectors: element div, class .btn, id #main, attribute [type="text"].
+
+Combinators:
+
+Descendant: nav a
+
+Child: ul > li
+
+Adjacent sibling: h1 + p
+
+General sibling: h1 ~ p
+
+Pseudo-classes: :hover, :focus, :active, :checked, :nth-child(n), :first-of-type, :last-child.
+
+Pseudo-elements: ::before, ::after, ::first-letter, ::selection.
+
+Modern selectors: :not(), :is(), :where() — :where() has zero specificity. Newer ones include :has() (container/parent selector — support can vary by browser; check compatibility when using).
+
+7 — Layout techniques
+
+display types: block, inline, inline-block, none, flex, grid, table, flow-root.
+
+Legacy layout:
+
+Floats & clears — historically used for multi-column layouts; now largely replaced by Flexbox/Grid.
+
+position: static (default), relative, absolute, fixed, sticky.
+
+Flexbox (one-dimensional, row or column):
+
+Container: display: flex; flex-direction: row|column; justify-content; align-items; flex-wrap; gap;
+
+Items: flex: 1 1 auto; order; align-self;
+
+CSS Grid (two-dimensional):
+
+Container: display: grid; grid-template-columns; grid-template-rows; gap; grid-auto-flow;
+
+Place items explicitly with grid-column and grid-row or use named areas.
+
+When to use which:
+
+Flexbox for single-axis layouts: navbars, center alignment, small component arrangement.
+
+Grid for full-page or two-dimensional layouts: dashboards, complex cards grids.
+
+8 — Responsive design & images
+
+Use mobile-first CSS (styles for small screens first, then media queries for larger).
+
+Example breakpoints: min-width queries: 480px, 768px, 1024px, 1280px (tailor to your project).
+
+css
+Copy
+Edit
+/* mobile-first */
+.container { padding: 1rem; }
+@media (min-width: 768px) {
+  .container { padding: 2rem; }
+}
+Responsive images:
+
+srcset + sizes:
+
+html
+Copy
+Edit
+<img src="small.jpg"
+     srcset="small.jpg 480w, medium.jpg 800w, large.jpg 1200w"
+     sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
+     alt="...">
+<picture> for art-direction: choose totally different crops per viewport.
+
+Responsive typography:
+
+Use fluid sizes with clamp() and vw units:
+
+css
+Copy
+Edit
+h1 {
+  font-size: clamp(1.5rem, 3vw + 1rem, 3rem);
+}
+9 — Styling techniques: variables, units, color
+
+CSS variables (custom properties):
+
+css
+Copy
+Edit
+:root {
+  --brand: #0b5fff;
+  --padding: 1rem;
+}
+.button { background: var(--brand); padding: var(--padding); }
+Units:
+
+Absolute: px (device pixel units)
+
+Relative: em, rem (root/em based), %, vh/vw, fr (Grid fractional unit)
+
+Use rem for consistent scalable typography; em for component-relative sizing.
+
+Colors:
+
+Hex #RRGGBB, #RGB, rgba rgba(255,0,0,0.5), hex8 with alpha, hsl() & hsla() — hsl often easier for harmonious themes.
+
+Dark mode: prefers-color-scheme media query:
+
+css
+Copy
+Edit
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #111; --text: #eee; }
+}
+10 — Transitions, transforms & animations
+
+Transforms: transform: translateX(), translateY(), scale(), rotate(), skew().
+
+Transitions (smooth property changes):
+
+css
+Copy
+Edit
+.button { transition: background-color 0.2s ease, transform 0.2s ease; }
+.button:hover { transform: translateY(-4px); }
+Keyframe animations:
+
+css
+Copy
+Edit
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-in { animation: fadeIn 0.6s ease both; }
+Performance tip: animate transform & opacity where possible (GPU-accelerated) rather than animating layout-changing properties like width, height, top, left (these cause reflow & are more expensive).
+
+11 — Forms: styling, validation & UX
+
+Native validation attributes: required, min, max, pattern, type="email", type="url", inputmode.
+
+Custom validation: Constraint Validation API (checkValidity(), setCustomValidity()) and reportValidity().
+
+UX best practices:
+
+Always pair <label> with <input> (and use aria-describedby for help/error text).
+
+Use proper input types for mobile keyboards.
+
+Use autocomplete, autofocus sparingly.
+
+Inline error messages and accessible alerts for screen readers.
+
+Styling form controls: browsers render form controls differently — consider normalized base styles or use custom controls for consistent look.
+
+12 — Accessibility (a11y) practical checklist
+
+Use semantic HTML where possible.
+
+Provide alt for images (decorative images use alt="").
+
+Ensure keyboard navigability (tab order, visible focus states).
+
+Use aria-* attributes only when semantics cannot be expressed in native HTML (e.g., complex widgets).
+
+Provide skip links: <a class="skip-link" href="#main">Skip to main content</a>.
+
+Color contrast: follow WCAG contrast ratios (text contrast at least 4.5:1 for normal text ideally).
+
+Label form fields and associate errors with aria-describedby.
+
+Test with screen readers (NVDA, VoiceOver) and keyboard-only navigation.
+
+Don’t rely only on color to convey information.
+
+13 — Tools & developer workflow
+
+DevTools (Chrome/Firefox/Edge/Safari): Elements inspector, styles, layout, performance profiler, network throttling.
+
+Live reloading servers: Live Server, Vite, Parcel, Webpack Dev Server.
+
+Build tools: npm scripts, Webpack, Rollup, Parcel, Vite (modern, fast).
+
+CSS preprocessors: Sass (SCSS), LESS, Stylus — add variables, nesting, mixins; but modern CSS variables reduce some needs.
+
+PostCSS + Autoprefixer — automatically add vendor prefixes.
+
+Linters & formatters: stylelint (CSS linter), prettier (formatting).
+
+Accessibility testing: axe-core, Lighthouse Accessibility audits.
+
+14 — Performance & optimization (practical)
+
+Critical path & render optimization:
+
+Inline critical CSS for above-the-fold content; defer the rest. (Be careful — keep inline CSS small.)
+
+Minify and compress CSS & HTML.
+
+Use rel="preload" for fonts and critical assets, rel="preconnect" for external origins.
+
+Fonts:
+
+Use font-display: swap; to avoid invisible text. Limit custom font weights & subsets. Consider variable fonts.
+
+Images:
+
+Use modern formats (WebP, AVIF) where possible; compress & serve responsive sizes.
+
+Lazy-load images: <img loading="lazy" src="...">.
+
+Reduce CSS bloat:
+
+Don’t ship unused styles; tree-shake or use purge tools for utility frameworks (e.g., Tailwind purge).
+
+HTTP/2 and server optimizations (concatenate requests less important on HTTP/2; prefer many small files in dev, use caching).
+
+Audit with Lighthouse to find render-blocking resources and layout shifts (CLS).
+
+15 — CSS architectures & naming conventions
+
+BEM (Block__Element--Modifier): .card, .card__title, .card--featured — predictable & explicit.
+
+OOCSS: separate structure from skin, reuse classes.
+
+SMACSS: categorizes styles into base, layout, module, state, theme.
+
+Utility-first / Atomic CSS: small utility classes (Tailwind CSS) — very productive but requires discipline on naming & purge.
+Choose a style and be consistent across the project.
+
+16 — Example project skeleton (simple responsive page)
+
+index.html
+
+html
+Copy
+Edit
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Demo Page</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="/">MySite</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <h1>Welcome to MySite</h1>
+        <p>Short pitch.</p>
+        <a class="btn" href="#contact">Get started</a>
+      </div>
+    </section>
+
+    <section id="features" class="features container">
+      <article class="feature">...</article>
+      <article class="feature">...</article>
+      <article class="feature">...</article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© 2025 MySite</div>
+  </footer>
+</body>
+</html>
+styles.css (high-level)
+
+css
+Copy
+Edit
+:root{
+  --gap: 1rem;
+  --container-max: 1100px;
+  --brand: #0b5fff;
+  --bg: #fff;
+  --text: #222;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial; color:var(--text); background:var(--bg); line-height:1.45}
+.container{max-width:var(--container-max); margin:0 auto; padding:0 1rem}
+.site-header{background:#fff; border-bottom:1px solid #eee}
+.site-nav ul{display:flex; gap:1rem; list-style:none; margin:0; padding:0}
+.hero{padding:4rem 0; text-align:center; background:linear-gradient(180deg,#f6f8ff,#fff)}
+.features{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:var(--gap)}
+.btn{display:inline-block;padding:.6rem 1rem;background:var(--brand);color:#fff;border-radius:6px;text-decoration:none}
+@media (min-width:768px){
+  .site-nav ul{gap:2rem}
+  .hero{padding:6rem 0}
+}
+This gives a responsive grid for the .features section and a mobile-first layout.
+
+17 — Accessibility & testing quick checklist
+
+Use Lighthouse / axe to test pages.
+
+Keyboard test: Tab through interactive elements, ensure focus styles visible, no traps.
+
+Contrast test: ensure readable colors.
+
+Screen reader test: check landmark roles and reading order.
+
+HTML validation: run validators (W3C validator) during development.
+
+18 — Modern & emerging CSS features to be aware of
+
+CSS Grid Level 2 (subgrid support in some browsers).
+
+Container queries — let styles depend on the container size (useful for components that adapt independent of viewport).
+
+:has() — parent/relational selector that enables styles when a child matches a selector.
+
+CSS logical properties (margin-inline-start, padding-block) — useful for internationalization and writing modes.
+
+CSS accent-color, color-scheme, system color integration, and @layer / @scope for layering and cascade control.
+
+Note: these are powerful but browser support can vary. Check current compatibility before use in production (polyfills or progressive enhancement can help).
+
+19 — Performance & SEO checklist (practical)
+
+Keep HTML semantic & minimal.
+
+Defer non-essential scripts (async/defer) and put scripts at end of body if synchronous.
+
+Critical CSS optimization for above-the-fold.
+
+Compress images & use responsive images.
+
+Use caching headers and CDNs for assets.
+
+Use semantic tags & headings properly for SEO.
+
+Provide structured data for rich snippets where appropriate.
+
+20 — Common mistakes & pitfalls
+
+Overusing !important — leads to brittle CSS.
+
+Deeply nested selectors — makes override hard and specificity complicated.
+
+Using <div>/<span> when semantic tags exist.
+
+Large monolithic CSS files with unused styles — use modularization or purge approaches.
+
+Not testing across screen sizes and assistive tech.
+
+21 — Advanced topics & integrations
+
+CSS-in-JS: styled-components, Emotion — useful in React ecosystems but think about performance and SSR.
+
+Utility frameworks: Tailwind CSS — atomic utility classes and build-time purging.
+
+Component libraries: Bootstrap, Material UI, Bulma — accelerate development.
+
+Web Components: <my-element> with Shadow DOM — encapsulated styles and templates. Use :host, ::slotted, and shadow-piercing selectors.
+
+Progressive Web Apps (PWA): manifests, service workers, offline caching (styles and HTML play a role in initial UX).
+
+22 — Learning path & exercises
+
+Beginner: build static pages — landing page, responsive nav, blog post template.
+
+Intermediate: build small component library (buttons, cards) with theming using CSS variables. Add accessibility features.
+
+Advanced: build a responsive dashboard layout using CSS Grid, use container queries, and optimize loading & critical CSS. Add animations that don't jank (using transform & opacity).
+
+23 — Useful CLI / dev commands & tips
+
+npx live-server or npx vite for a dev server with hot reload.
+
+npx prettier --write . to format HTML/CSS.
+
+npx stylelint "**/*.css" to lint styles.
+
+Use browser DevTools to edit CSS live, measure layout & paint times, and test various network conditions.
+
+24 — Quick reference cheat-sheet (common tags & CSS properties)
+
+HTML (common):
+
+<!doctype html>, <html lang="">, <head>, <meta>, <title>, <link>, <script>, <header>, <nav>, <main>, <article>, <section>, <aside>, <footer>, <img alt="">, <a href="">, <form>, <input>, <button>, <label>, <ul>, <ol>, <li>, <table>, <figure>, <figcaption>
+
+CSS core:
+
+Box model: box-sizing, width, height, padding, border, margin
+
+Layout: display, position, top/right/bottom/left, float, clear
+
+Flex: display:flex, flex-direction, justify-content, align-items, gap
+
+Grid: display:grid, grid-template-columns, grid-template-rows, gap, grid-area
+
+Typo: font-family, font-size, line-height, font-weight, text-align
+
+Colors: color, background, background-image, linear-gradient
+
+Effects: box-shadow, border-radius, transform, transition, animation
+
+25 — What I can make for you next (options)
+
+A printable one-page cheat sheet / PDF summarizing the essentials.
+
+A step-by-step responsive landing page tutorial (full code + Git repo layout + build (Vite) + deployment notes).
+
+A deep dive into a topic: CSS Grid + container queries examples, or accessibility checklist with tests and screen reader examples.
+
+A set of practical exercises with solutions (beginner → advanced).

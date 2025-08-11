@@ -1,0 +1,508 @@
+JavaScript — Complete Detailed Notes
+1. What is JavaScript (short)
+JavaScript (JS) is a high-level, dynamic, single-threaded (conceptually) language originally designed for the browser.
+
+It’s standardized as ECMAScript (ES) and runs in many environments (browsers, Node.js, Deno, embedded).
+
+Multi-paradigm: procedural, object-oriented (prototype-based), and functional.
+
+2. History & Standards
+Created by Brendan Eich (Netscape) in 1995.
+
+Standardized by ECMA International as ECMAScript (ES). Major milestones: ES5 (2009), ES6/ES2015 (huge feature set), then yearly releases (ES2016, ES2017, …).
+
+The spec (ECMAScript) defines syntax, semantics, built-in objects and algorithms. Browser and runtime engines (V8, SpiderMonkey, JavaScriptCore, Chakra) implement it.
+
+3. JavaScript environments / engines
+V8 (Chrome, Node.js) — high-performance engine with JIT.
+
+SpiderMonkey (Firefox), JavaScriptCore (Safari), Chakra (older Edge).
+
+Node.js — runtime built on V8 + libuv (I/O).
+
+Deno — secure modern runtime (also built on V8), uses ES modules & TypeScript first-class.
+
+4. Language fundamentals & syntax
+Hello world
+js
+Copy
+Edit
+console.log("Hello, JavaScript!");
+Declarations
+var (function-scoped, hoisted — avoid in modern code).
+
+let (block-scoped).
+
+const (block-scoped, immutable binding; object contents can still change).
+
+Data types (primitive vs objects)
+Primitive: undefined, null, boolean, number, bigint, string, symbol.
+
+Object: arrays, functions, plain objects, Dates, RegExp, Map, Set, WeakMap, WeakSet, etc.
+
+Operators
+Arithmetic: + - * / % **
+
+Comparison: === !== == != < > <= >= (prefer ===)
+
+Logical: && || !
+
+Nullish coalescing: ??
+
+Optional chaining: ?.
+
+Ternary: condition ? a : b
+
+Spread/rest: ... (used in arrays, function args, object shallow copy)
+
+5. Hoisting, scope & closures
+Hoisting
+Function declarations and var declarations are hoisted (declarations moved to top); let/const are hoisted but in a Temporal Dead Zone (TDZ) until initialized.
+
+js
+Copy
+Edit
+console.log(a); // undefined (var)
+var a = 1;
+
+console.log(b); // ReferenceError (let)
+let b = 2;
+Scope
+Global, function, and block scope (with let/const). Arrow functions do not create their own this or arguments.
+
+Closures
+A function remembers the environment where it was created.
+
+js
+Copy
+Edit
+function makeCounter() {
+  let count = 0;
+  return function() { return ++count; };
+}
+const c = makeCounter();
+c(); // 1
+c(); // 2
+Closures are powerful for encapsulation but can hold references and cause memory to persist.
+
+6. this and call/apply/bind
+this depends on how a function is called:
+
+Simple call: this -> global object (or undefined in strict mode).
+
+Method call obj.method(): this → obj.
+
+Constructor new Foo(): this → newly created object.
+
+call/apply/bind allow explicit binding.
+
+Arrow functions: lexical this (inherits this from the surrounding scope).
+
+js
+Copy
+Edit
+const o = { x: 1, getX() { return this.x; } };
+o.getX(); // 1
+
+function f() { return this; }
+f.call({a: 10}); // {a:10}
+
+const arrow = () => this; // lexical
+7. Objects, prototypes, and inheritance
+JS uses prototype-based inheritance. Each object has an internal [[Prototype]] (often accessible via __proto__ or Object.getPrototypeOf()).
+
+Object.create(proto) creates an object with a specified prototype.
+
+Functions used with new are constructors; their prototype property becomes the created object's [[Prototype]].
+
+js
+Copy
+Edit
+function Person(name) {
+  this.name = name;
+}
+Person.prototype.greet = function(){ console.log(`Hi ${this.name}`); }
+const p = new Person('Riva');
+p.greet();
+ES6 class syntax is syntactic sugar over prototypes:
+
+js
+Copy
+Edit
+class Person {
+  constructor(name) { this.name = name; }
+  greet() { console.log(`Hi ${this.name}`); }
+}
+8. Functions — forms and features
+Function declaration (hoisted)
+
+Function expression (anonymous or named)
+
+Arrow function (shorter, lexical this)
+
+Default parameters, rest parameters, named params via destructuring
+
+IIFE (Immediately Invoked Function Expression)
+
+Generator functions with function* and yield
+
+Async functions return promises (async / await)
+
+Examples:
+
+js
+Copy
+Edit
+// default & rest
+function sum(a=0, ...rest) { return rest.reduce((s,x) => s+x, a) }
+
+// arrow
+const add = (a,b) => a+b;
+
+// generator
+function* idMaker() { let id=0; while(true) yield ++id; }
+9. Arrays & common operations
+Array creation: [], new Array()
+
+Useful methods: map, filter, reduce, forEach, find, findIndex, some, every, flat, flatMap, sort, slice, splice.
+
+Iteration: for, for...of, forEach, for...in (use carefully, for...in iterates keys).
+
+js
+Copy
+Edit
+const arr = [1,2,3];
+const doubled = arr.map(x => x*2);
+const filtered = arr.filter(x => x%2===1);
+const sum = arr.reduce((s,x) => s + x, 0);
+10. Maps, Sets, WeakMap, WeakSet
+Map – key-value store allowing any key types.
+
+Set – unique value collection.
+
+WeakMap / WeakSet – keys are weakly referenced (helpful for avoiding memory leaks; keys must be objects).
+
+js
+Copy
+Edit
+const m = new Map();
+m.set({id:1}, "meta");
+const s = new Set([1,2,3]);
+11. Modules — ESM vs CommonJS
+ES Modules (ESM): import/export (static), used in browsers natively and in modern Node (with .mjs or type: "module"). Support for tree-shaking by bundlers.
+
+js
+Copy
+Edit
+// util.js
+export function add(a,b){ return a+b }
+export default 42
+
+// main.js
+import val, { add } from './util.js'
+CommonJS (CJS): require / module.exports (synchronous, dynamic), Node’s traditional module system.
+
+js
+Copy
+Edit
+const mod = require('./util')
+module.exports = ...
+Differences: syntax, static analysis (ESM static), module caching, circular dependency behaviors, top-level this differences, import is async-capable (dynamic import() returns a promise), Node supports top-level await in ESM.
+
+12. Asynchronous JavaScript & the event loop (core)
+Concurrency model: single-threaded event loop + asynchronous I/O (non-blocking) via underlying system (libuv in Node).
+
+Event loop basics (simplified): tasks (macrotasks) and microtasks queues.
+
+Macrotasks: setTimeout, setInterval, I/O callbacks, setImmediate (Node).
+
+Microtasks: Promise callbacks (.then), queueMicrotask, process.nextTick (Node).
+
+Microtasks run after current task completes but before the next macrotask.
+
+Example showing microtask priority:
+
+js
+Copy
+Edit
+console.log('start');
+setTimeout(()=>console.log('timeout'), 0);
+Promise.resolve().then(()=>console.log('promise'));
+console.log('end');
+// start, end, promise, timeout
+Promises
+Represent eventual result of async operation; can chain .then() and .catch(). Prefer async/await for readability.
+
+js
+Copy
+Edit
+fetch('/data').then(res => res.json()).then(data => console.log(data)).catch(err => console.error(err));
+Async/await
+js
+Copy
+Edit
+async function getData(){
+  try {
+    const res = await fetch('/data');
+    const json = await res.json();
+    return json;
+  } catch (e) { console.error(e); }
+}
+Generators + async iterators
+Generators (yield) allow pause/resume. With for await (const item of asyncIterable) you can iterate async streams.
+
+13. Error handling
+try { } catch (e) { } finally { } for synchronous and awaited async errors.
+
+Unhandled promise rejections: Node may emit warnings or terminate depending on settings — always .catch promises.
+
+14. Browser APIs & DOM
+DOM (Document Object Model): document, querySelector, createElement, appendChild, classList, attributes.
+
+Events: addEventListener, event propagation (capturing → target → bubbling), stopPropagation, preventDefault.
+
+Event delegation for performance: attach handler to parent and inspect event.target.
+
+Fetch API: modern Promise-based HTTP client (better than XMLHttpRequest).
+
+js
+Copy
+Edit
+const res = await fetch('/api');
+const json = await res.json();
+Important Web APIs: localStorage, sessionStorage, IndexedDB, History API, Service Workers, WebSockets, WebRTC, WebGL, Canvas, Notification, Geolocation, IntersectionObserver, ResizeObserver, Performance APIs.
+
+15. DOM manipulation example & event delegation
+html
+Copy
+Edit
+<ul id="list">
+  <li data-id="1">A</li><li data-id="2">B</li>
+</ul>
+<script>
+document.getElementById('list').addEventListener('click', (e) => {
+  const li = e.target.closest('li');
+  if(!li) return;
+  console.log('clicked', li.dataset.id);
+});
+</script>
+16. Templates, shadow DOM & web components
+Template tag <template> holds inert DOM to clone later.
+
+Shadow DOM provides encapsulated styling & markup for web components.
+
+Custom Elements (class MyEl extends HTMLElement) let you create reusable components with lifecycle callbacks.
+
+17. Performance & rendering
+Browser render pipeline: DOM → CSSOM → render tree → layout (reflow) → paint → composite.
+
+Avoid layout thrashing (reading layout properties like offsetTop after writes causes reflow). Batch DOM reads/writes and use requestAnimationFrame for animations.
+
+Prefer transform and opacity for animations (GPU-accelerated), avoid animating costly properties.
+
+Use virtualization (windowing) for long lists, lazy loading, code-splitting, tree-shaking, and caching.
+
+18. Memory & common leaks
+Closures holding large objects, forgotten timers (setInterval), detached DOM nodes referenced by JS, global variables.
+
+Fixes: clear timers, remove event listeners, avoid global caches, use WeakMap/WeakSet where appropriate, reuse nodes.
+
+19. Tooling — build, test, lint, format
+Package managers: npm, yarn, pnpm.
+
+Bundlers & tools: Webpack, Rollup, Parcel, esbuild, Vite (dev server + build).
+
+Transpilation & polyfills: Babel (use with @babel/preset-env and core-js for polyfills).
+
+Linters & formatters: ESLint (rules), Prettier (formatter), Stylelint (CSS).
+
+Testing: Jest (unit), Mocha + Chai, Jasmine, AVA, Karma, Cypress (E2E), Playwright (E2E).
+
+Type checking: TypeScript (superset), JSDoc + // @ts-check, Flow (less common now).
+
+Example package.json scripts:
+
+json
+Copy
+Edit
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "jest",
+    "lint": "eslint src --fix"
+  }
+}
+20. Frameworks & libraries (ecosystem)
+UI frameworks: React, Vue, Angular, Svelte.
+
+Full-stack/meta frameworks: Next.js (React SSR/SSG), Nuxt (Vue), Remix, Sapper/SvelteKit.
+
+State management: Redux, MobX, Zustand, Recoil, Pinia.
+
+Server frameworks: Express, Koa, Fastify, Hapi (Node). Deno uses native ES modules and different web APIs.
+
+Bundler-less modern dev: Vite + ESM + ESM-powered tools.
+
+21. Server-side JS (Node.js fundamentals)
+Node.js is event-driven, non-blocking I/O. Core modules: fs, http, path, crypto, stream, events, process, child_process.
+
+Build a minimal HTTP server:
+
+js
+Copy
+Edit
+import http from 'http'; // ESM in Node
+const server = http.createServer((req, res) => {
+  res.writeHead(200, {'Content-Type':'text/plain'});
+  res.end('Hello Node');
+});
+server.listen(3000);
+Streams: Readable, Writable, Transform for efficient I/O.
+
+Clustering and worker threads for CPU-bound tasks (Worker Threads API).
+
+Native addons via N-API or node-gyp (C/C++). Use node:worker_threads for parallelism.
+
+22. Security (web)
+XSS (Cross-Site Scripting): sanitize untrusted HTML, avoid innerHTML, use textContent, Trusted Types, CSP (Content Security Policy).
+
+CSRF: use SameSite cookies, CSRF tokens, double-submit cookies.
+
+CORS: configure server’s Access-Control-Allow-* headers; browsers enforce cross-origin restrictions.
+
+HTTPS/TLS, secure cookies (Secure, HttpOnly).
+
+Input validation on server-side (never trust client).
+
+Avoid eval-like APIs, sanitize user content, use parameterized DB queries (prevent injection).
+
+23. Modern language features (ES6+ highlights)
+let/const, arrow functions, classes, template literals, destructuring, default params, rest/spread, Promise, Symbol, Map/Set, WeakMap, Proxy, Reflect, async/await, optional chaining (?.), nullish coalescing (??), BigInt, globalThis, Intl i18n APIs, BigInt, String/Array/Object helpers.
+
+24. Best practices & style tips
+Prefer const for values that don’t rebind; let otherwise — avoid var.
+
+Use strict equality ===.
+
+Keep functions small and pure when possible; favor immutability.
+
+Avoid deeply nested callbacks — use Promises/async-await.
+
+Document types: adopt TypeScript or JSDoc for large projects.
+
+Lint and format (ESLint, Prettier) in CI.
+
+Add tests (unit + integration + end-to-end).
+
+Use semantic HTML + ARIA for accessibility in the UI.
+
+25. Debugging & profiling
+Browser DevTools: breakpoints, watch expressions, call stack, network, performance profiling, memory snapshots, coverage.
+
+console.* (log, warn, error, table, time/timeEnd).
+
+Node inspector (node --inspect + Chrome DevTools).
+
+Profilers: Chrome DevTools profiler, clinic.js, 0x, node --prof.
+
+Heap snapshot analysis to find memory leaks.
+
+26. Deployment & production concerns
+Build for production (minify, tree-shake, compress).
+
+Use source maps for debugging (but protect them in production).
+
+CDN for static assets, caching headers, long-term caching with hashed filenames.
+
+Use environment variables (not in client code) — vendors like Netlify, Vercel, Heroku, and cloud providers make deployments simple.
+
+Monitor (Sentry, Datadog), logs, health checks, graceful shutdowns, rate limiting.
+
+27. Interview topics & study checklist
+Scopes, closures, hoisting.
+
+Event loop, microtasks vs macrotasks.
+
+this, call/apply/bind.
+
+Prototypes & inheritance, Object.create().
+
+Promises, async/await, error handling.
+
+ES6 features: destructuring, rest/spread, arrow functions, classes.
+
+DOM manipulation & event delegation.
+
+Performance: reflow/paint, debouncing/throttling, virtualization.
+
+Node.js basics: streams, events, buffers.
+
+Security basics (XSS, CSRF, CORS).
+
+Tooling: bundlers, transpilers, eslint, testing frameworks.
+
+28. Quick code snippets & recipes
+Debounce / Throttle
+js
+Copy
+Edit
+// debounce
+function debounce(fn, wait){
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(()=>fn(...args), wait); };
+}
+
+// throttle
+function throttle(fn, wait){
+  let last = 0;
+  return (...args) => {
+    const now = Date.now();
+    if(now - last >= wait){ last = now; fn(...args); }
+  };
+}
+Promise → async
+js
+Copy
+Edit
+// promise
+fetch('/data').then(r => r.json()).then(console.log).catch(console.error);
+
+// async
+async function run(){ try { const r = await fetch('/data'); console.log(await r.json()); } catch(e){ console.error(e); } }
+Event loop demo
+js
+Copy
+Edit
+console.log('script start');
+setTimeout(() => console.log('timeout'), 0);
+Promise.resolve().then(() => console.log('promise'));
+console.log('script end');
+// start, end, promise, timeout
+Simple Node server (Express)
+js
+Copy
+Edit
+import express from 'express';
+const app = express();
+app.get('/', (req, res) => res.send('Hello'));
+app.listen(3000);
+29. Learning path & resources
+Start: fundamentals (variables, control flow, functions, arrays, objects).
+
+Intermediate: closures, prototype, this, async patterns, DOM. Build small projects (todo app, fetch API).
+
+Advanced: event loop, performance, Node.js, bundling, SSR, TypeScript, testing.
+
+Resources: MDN Web Docs (canonical), ECMAScript spec (for deep dives), You Don’t Know JS (book series), Frontend Masters / Udemy / freeCodeCamp.
+
+30. Cheatsheet — Commands & tips
+node file.js run Node script.
+
+npx create-react-app myapp or use npm init vite@latest for modern scaffolding.
+
+npm init -y, npm install <pkg>, npm run <script>.
+
+npx eslint . --fix to lint/auto-fix.
+
+git + CI for code quality.

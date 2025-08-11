@@ -1,0 +1,341 @@
+Designs, trains/tunes, evaluates, and productionizes generative models and the systems around them. That includes:
+
+prompt engineering & prompt/system design,
+
+retrieval-augmented generation (RAG) & knowledge ingestion,
+
+fine-tuning and parameter-efficient tuning (LoRA/PEFT/QLoRA),
+
+model infra (serving, scaling, latency/cost tradeoffs),
+
+evaluation, safety, and monitoring (hallucinations, bias, misuse),
+
+tooling and MLOps for repeatability and governance.
+
+High-level learning flow (compact)
+Foundations → Model Fundamentals → Practical Gen-AI (APIs & LLMs) → RAG + Retrieval → Fine-tuning & PEFT → Evaluation & Safety → Production + MLOps → Scale & Research.
+
+BEGINNER (0 → 2 months) — learn the foundations, get hands-on fast
+Goal: Understand basic ML/NLP concepts, call LLM APIs, build simple RAG chatbot, learn tooling.
+
+Core knowledge & skills
+Programming: solid Python (virtualenv/venv, packages, typing basics).
+
+ML basics: supervised learning, loss, gradients — intuition only.
+
+NLP basics: tokens, tokenization, embedding idea, seq → label concept.
+
+Prompting & API usage: how to call an LLM (system + user prompts), temperature, max_tokens, top_p, stop sequences, simple few-shot prompting.
+
+Data handling: text cleaning, chunking/segmentation, simple metadata.
+
+Embeddings & retrieval: concept of embedding vectors and nearest-neighbor retrieval.
+
+Vector stores (conceptual): what a vector DB does (store/query by embedding) — e.g., local FAISS / in-memory vs hosted solutions.
+
+Tools & libs to install & try
+Python, pip, requests/httpx, Jupyter/Colab.
+
+Hugging Face transformers & diffusers (for experimentation).
+
+Sentence-transformers (for embeddings) and FAISS or a simple in-memory vector store.
+
+Try a hosted LLM API (OpenAI/Anthropic/Cohere/Hugging Face Inference) for quick prototyping.
+
+First practical project (weekend)
+Tiny RAG chat assistant
+
+Ingest a handful of docs (PDF/text).
+
+Chunk docs into ~1–2k token pieces, generate embeddings, index in FAISS.
+
+For a query: embed query → top-k search → stitch top docs into a prompt template → call LLM and return answer.
+
+Minimal pseudo-code sketch (high-level):
+
+python
+Copy
+Edit
+# 1) embed docs (with sentence-transformers or API embeddings)
+# 2) index into FAISS
+# 3) on query:
+q_emb = embed(query)
+ids, scores = faiss_index.search(q_emb, k=5)
+context = "\n\n".join(docs[i] for i in ids)
+prompt = f"Use the following docs to answer:\n\n{context}\n\nQ: {query}"
+answer = llm_api.call(prompt)
+Beginner deliverables
+Working RAG chatbot on localhost or Colab.
+
+Short write-up: dataset description, chunking strategy, prompt templates used, failure cases observed.
+
+INTERMEDIATE (2 → 8 months) — deep practical skillset & reproducible workflows
+Goal: fine-tune & customize models, build robust retrieval pipelines, evaluation metrics, simple production deployment.
+
+Core areas to learn & practice
+Transformers internals (practical):
+
+tokenizers, attention basics, encoder vs decoder vs seq2seq.
+
+how context length affects design and cost (chunking strategies, sliding windows).
+
+Embeddings and Vector DBs:
+
+vector DB options & tradeoffs (FAISS/Annoy/chroma/Pinecone/Weaviate/Milvus): latency, persistence, scaling, metadata filtering (MMS/filters).
+
+embedding quality matters — try sentence-transformers vs API embeddings.
+
+RAG patterns & pipelines:
+
+Retriever + Reader architecture, dense retrievers vs hybrid (sparse + dense).
+
+Retrieval augmentation: rerankers, citation/attribution strategies, provenance tracking, retrieval prompts.
+
+Fine-tuning & PEFT:
+
+Full fine-tuning vs parameter-efficient approaches (LoRA/PEFT), QLoRA for memory-efficient finetune on large models.
+
+Data preparation: instruction tuning, formatting dialogs, deduplication, quality labeling, dataset balancing.
+
+Evaluation & human-in-the-loop:
+
+Automated signals: perplexity, ROUGE/BLEU for some tasks (limited), answer overlap metrics; embedding-based similarity and faithfulness metrics.
+
+Human eval: rubric design, A/B testing, red-team tests to elicit harmful outputs.
+
+Calibration & confidence: when to abstain or escalate to human.
+
+Model safety & filtering:
+
+Input sanitization, prompt injection awareness, output filters, content moderation layers, rate limits and access controls.
+
+Serving & lightweight productionization:
+
+Create an inference API (FastAPI/uvicorn), simple batching/caching, rate limiting.
+
+Consider a simple managed solution for inference or containerized model with local GPU if using open models.
+
+Intermediate projects (practical & measurable)
+Project: Domain-specific QA
+
+Build a RAG stack for a domain (legal docs, product manuals).
+
+Add provenance (which doc, which chunk) and generate citations in the answer.
+
+Add automated evaluation: sample QA pairs, compute retrieval recall@k, and track answer factuality via overlap or human grading.
+
+Project: Instruction fine-tuned assistant
+
+Collect ~1k–10k instruction/response pairs (synthetic + human).
+
+Use PEFT/LoRA to fine-tune a base model; measure improvement on domain tasks.
+
+Deploy small inference endpoint and measure latency/cost.
+
+Example sketch: LoRA/PEFT pipeline (conceptual)
+Tokenize instruction/response pairs into conversational format.
+
+Load a base model with quantized/8-bit loading if memory constrained.
+
+Wrap model with PEFT adapters (LoRA), train with low learning rate.
+
+Evaluate on held-out set and conduct small human checks.
+
+Reproducibility & tooling
+Use experiment tracking (MLflow/Weights & Biases) to log datasets, seeds, metrics, artifacts.
+
+Containerize training runs (Docker) or use accelerate/deepspeed for multi-GPU.
+
+Use dataset versioning (DVC or dataset snapshots) and seeded splits.
+
+Intermediate deliverables
+A domain RAG system with: retrieval metrics (recall@k), answer quality checks, deployed inference endpoint, CI to run unit/integration tests for pipelines.
+
+ADVANCED (8+ months → 2+ years) — scale, research, systems & safety
+Goal: design, optimize and operate large Gen-AI systems at scale; lead architecture and safety efforts.
+
+Advanced technical topics
+Scaling & infra
+
+model sharding (tensor/pipeline/model parallelism), inference optimizations, batching strategies, dynamic batching, autoscaling GPU pods.
+
+inference engines: optimized runtimes (TensorRT/ONNX Runtime/Triton/DeepSpeed Inference) and tradeoffs.
+
+quantization & compression: 8/4/2-bit quantization, activation quantization, and effects on accuracy.
+
+memory & cost optimization: offloading, caching logits/embeddings, hybrid cloud/edge strategies.
+
+Advanced fine-tuning & alignment
+
+RLHF pipeline: reward model training, preference data collection, PPO or safer alternatives; managing the instability of RL.
+
+instruction-tuning at scale, safety alignment strategies, and guardrails (scoring, monitoring).
+
+Robust evaluation & continuous validation
+
+Build automated eval suites: adversarial tests, domain stress tests, truthfulness checks, calibration.
+
+Continuous monitoring: hallucination rates, latency, drift in input distribution, concept drift in knowledge bases.
+
+Governance, ethics & compliance
+
+dataset documentation (datasheets), model cards, audits, privacy-preserving techniques (DP, secure aggregation, federated training).
+
+access controls, rate limits, logging & audit trails for queries/responses.
+
+Research & innovation
+
+Keep current with model architectures, new pretraining objectives, retrieval paradigms, multi-modal models (text+image+audio+video).
+
+Prototype novel ideas: retrieval as memory, retrieval augmentation for chain-of-thought, multimodal fusion.
+
+Advanced projects (impactful & production)
+Project: Global RAG platform
+
+Multi-tenant RAG with per-tenant vector DBs and policy isolation, metrics/observability, real-time indexing pipelines, hot/cold storage tiers, and robust SLOs.
+
+Project: Low-latency assistant service
+
+Use quantized models + optimized inference stack to achieve sub-200ms tail latency for short responses at 95th percentile; implement fallback to larger model for complex queries.
+
+Project: RLHF & alignment pipeline
+
+Build preference collection workflows, reward model lifecycle, safe deployment of policy updates with canary/rollout strategy.
+
+Leadership & system ops
+Define SLO/SLAs, incident runbooks, responsible update processes.
+
+Create red-team and bug bounty practices for model misuse testing.
+
+Lead cross-functional governance (legal/compliance/ops) for deployment.
+
+Cross-cutting engineering checklist (apply at every level)
+Data quality: dedupe, provenance, schema checks, label audits.
+
+Reproducibility: seed + deterministic pipelines when possible; log all config.
+
+Testing: unit tests for components, integration tests for pipelines, smoke tests for endpoints, and regression tests for model metrics.
+
+Observability: logs, traces, metrics; publish dashboards for model quality (hallucination rate, distribution shift).
+
+Security: input validation, prompt injection mitigation, rate limiting, monitoring for abuse.
+
+Cost controls: monitor token usage, model choice, caching & batching to reduce spend.
+
+Core skills matrix (compact)
+Programming & infra	ML & modeling	NLP & LLM-specific	Safety & eval	MLOps
+Python, Docker, FastAPI	PyTorch, JAX basics	tokenization, embeddings	content filtering	CI/CD, experiment tracking
+Async I/O, system design	Transformers, Hugging Face	RAG, rerankers, prompt templates	human eval, red-teaming	deployment, autoscaling
+Cloud infra (AWS/GCP/Azure)	fine-tuning, PEFT	evaluation metrics for gen tasks	privacy & governance	monitoring & cost analysis
+
+Recommended study path & sample timeline (intensive / self-paced)
+Weeks 0–2: Python + small ML refresher; get Hugging Face transformers and a hosted LLM API call working.
+
+Weeks 3–6: Build beginner RAG chatbot; experiment with embeddings & FAISS.
+
+Weeks 7–12: Learn fine-tuning basics + PEFT; do a small LoRA fine-tune on domain dataset. Track experiments.
+
+Months 4–8: Productionize RAG with a vector DB, add provenance, build automated eval. Add monitoring.
+
+Months 9–18+: Dive into scaling & infra, RLHF basics, alignment topics, advanced quantization & inference engineering.
+
+Practical code patterns & short examples
+1) Simple retrieval + prompt (conceptual)
+python
+Copy
+Edit
+# embed query -> search vector DB -> build prompt -> call LLM
+q_emb = embed(query)                       # use sentence-transformers or API embeddings
+ids = vector_db.query(q_emb, top_k=5)      # returns doc ids + metadata
+ctx = "\n\n".join([docs[i] for i in ids])
+prompt = f"Context:\n{ctx}\n\nAnswer concisely: {query}"
+answer = call_llm(prompt)
+2) Minimal FastAPI inference endpoint
+python
+Copy
+Edit
+from fastapi import FastAPI
+app = FastAPI()
+
+@app.post("/qa")
+async def qa(body: dict):
+    q = body["query"]
+    ctx = retrieve_context(q)
+    prompt = f"Context:\n{ctx}\n\nQ: {q}"
+    resp = llm_api(prompt)
+    return {"answer": resp}
+3) PEFT/LoRA fine-tuning sketch (conceptual)
+python
+Copy
+Edit
+from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments
+from peft import LoraConfig, get_peft_model
+
+tokenizer = AutoTokenizer.from_pretrained(base_model)
+model = AutoModelForCausalLM.from_pretrained(base_model, low_cpu_mem_usage=True)
+lora_config = LoraConfig(r=8, lora_alpha=32, target_modules=["q_proj","v_proj"])
+model = get_peft_model(model, lora_config)
+# prepare dataset, Trainer, and train (small lr, gradient accumulation)
+(Use framework docs / accelerate for large models and multi-GPU.)
+
+Evaluation, metrics & human review (practice)
+Retrieval metrics: recall@k, MRR for retrieval quality.
+
+Answer quality metrics: human score (precision-like scales), automated heuristics (overlap, factuality signals), consistency checks (ask rephrasing).
+
+Safety metrics: incidents per thousand queries, rate of outputs flagged by filters, red-team success rate.
+
+Business metrics: task completion rate, user satisfaction, fallbacks to human operator.
+
+Responsible AI & safety checklist (production)
+Dataset documentation (sources, licenses, sampling bias).
+
+Model card describing intended use, limitations, and evaluation results.
+
+Access controls and rate limits by user tier.
+
+Content moderation & escalation path for harmful outputs.
+
+Privacy & PII handling rules; minimize logging of raw user content; redact or encrypt PII in logs; follow local laws.
+
+Recommended projects (by level) — concrete deliverables
+Beginner: RAG FAQ bot for a website (FAISS + simple prompt).
+
+Intermediate: Domain assistant (legal/medical/product docs) with fine-tuned LLM, provenance, and CI that runs retrieval/answer tests.
+
+Advanced: Multi-tenant RAG platform (tenant isolation, streaming indexing, SLOs, observability, cost controls) + RLHF or alignment experiments on internal data.
+
+Interview prep checklist for Gen-AI engineer roles
+Explain transformer attention and tokenizer issues (OOM & context length tradeoffs).
+
+Describe RAG architecture and failure modes (retrieval misses, hallucinations).
+
+Walk through a fine-tuning or PEFT pipeline and tradeoffs (compute, data volume, forgetting).
+
+Show how to profile and reduce inference latency or cost (quantization, batching, caching, model choice).
+
+Discuss safety: prompt injection, privacy, and mitigation strategies.
+
+Whiteboard: design a scalable chatbot architecture with multi-model fallback and monitoring.
+
+Career paths & roles you’ll grow into
+GenAI Engineer / ML Engineer (build models + productionize).
+
+MLOps / Platform Engineer (infrastructure for training/serving).
+
+Research Engineer (prototype new model ideas and publish).
+
+Safety/Alignment Engineer (red-team, alignment pipelines, policy).
+
+Lead / Architect (design multi-model systems, governance).
+
+Common pitfalls & how to avoid them
+Relying on token counts as proxy for cost — measure end-to-end costs (embedding + retrieval + LLM).
+
+Ignoring retrieval provenance — always surface the source of retrieved content.
+
+Poor dataset hygiene — bad data creates persistent model biases.
+
+No automated eval — without continuous checks you’ll regress silently.
+
+Not monitoring user queries — rare/abusive inputs can break models in production.

@@ -1,0 +1,331 @@
+# Overview & mindset
+Frontend dev is both design+engineering: visual UX, browser internals, performance, accessibility, and system design (frontends are distributed systems). Successful frontend engineers combine strong fundamentals, practical tool fluency, product thinking, and communication/leadership.
+
+Core mindset:
+
+Build small, testable pieces; iterate.
+
+Prioritize user experience: performance, accessibility, reliability.
+
+Learn the platform (browser) deeply — it informs good engineering decisions.
+
+Be pragmatic: choose the right tradeoffs for product constraints.
+
+# Fundamental layer (must master first)
+These are non-negotiable — absolute foundation.
+
+HTML
+Semantic elements: headings, landmarks (<main>, <nav>, <article>), forms, tables (only for tabular data).
+
+Accessibility basics: aria-*, labelling inputs, alt text, roles, focus management.
+
+Document structure & meta: charset, viewport, SEO meta, canonical links.
+
+CSS
+Box model, cascade, specificity, box-sizing.
+
+Layout:
+
+Flexbox (one-dimensional layout).
+
+Grid (two-dimensional layout) — responsive grid systems.
+
+Responsive design: mobile-first, media queries, clamp(), fluid typography.
+
+Modern features: CSS variables, :is(), :where(), container queries, @supports.
+
+Styling strategies: BEM, Utility-first (Tailwind), CSS modules, CSS-in-JS tradeoffs.
+
+Animations & transforms — preferred properties (transform, opacity) and performance.
+
+JavaScript (ES6+)
+Syntax: let/const, destructuring, spread/rest, template literals, arrow functions.
+
+Closures, this, prototypal inheritance, modules (ESM).
+
+Asynchronous model: Promises, async/await, event loop (microtask vs macrotask).
+
+DOM APIs: event handling, delegation, creation/manipulation, forms API.
+
+Browser APIs: fetch, history, localStorage, sessionStorage, IndexedDB, Service Worker basics.
+
+# Tooling & developer workflow
+Version control: Git fluency (branching strategies, rebasing, PRs, conflict resolution).
+
+Package managers: npm, yarn, pnpm — lockfiles and semantic versioning.
+
+Code editor: VS Code power features (extensions, settings).
+
+Task runners & scripts: npm scripts, cross-env.
+
+Linters & formatters: ESLint, Prettier, stylelint.
+
+DevTools: Chrome/Firefox DevTools (network, performance profiler, memory snapshots, coverage).
+
+Local dev servers & HMR: Vite, Webpack Dev Server, Parcel.
+
+# Frameworks & libraries (practical recommendations)
+Choose one deep, then learn others at a conceptual level.
+
+React (most common): JSX, hooks (useState, useEffect, useRef), context, concurrent features, Suspense, component patterns.
+
+Vue: reactivity system, composition API.
+
+Angular: TypeScript-first, dependency injection, RxJS.
+
+Svelte: compiler-driven approach, light runtime.
+
+Also learn when not to use frameworks: Vanilla JS + progressive enhancement for small widgets.
+
+# State management & data fetching
+Local state patterns: lift state, composition, derived state.
+
+Global state options: Context (React), Redux, Zustand, Recoil, MobX — tradeoffs: boilerplate, debug tools, predictability.
+
+Server-state libraries: React Query / TanStack Query, SWR — caching, mutation, background refetching.
+
+GraphQL basics vs REST: schemas, fetching strategies, pagination, caching (Apollo, urql).
+
+Optimistic updates and cache invalidation patterns.
+
+# TypeScript & typing
+Basic types, interfaces, union/intersection types, generics.
+
+strict mode, noImplicitAny, and why they matter.
+
+Type-first design: types as API contracts.
+
+React + TypeScript patterns: props typing, FC vs function components, typing hooks.
+
+Migration strategies from JS to TS.
+
+# Build tools & bundlers
+Bundlers: Webpack (advanced configurability), Vite (fast dev), Rollup (libraries).
+
+Tree-shaking, code-splitting (dynamic import()), lazy loading routes/components.
+
+Module formats: ESM vs CommonJS; publishing libraries (umd/esm).
+
+Asset pipelines: image loaders, fonts, svgs, CSS extraction.
+
+Module federation & microfrontends (advanced).
+
+# Testing & quality
+Unit testing: Jest, Vitest.
+
+Component testing: React Testing Library (focus on behavior, not internals).
+
+Integration/E2E: Cypress, Playwright (end-to-end flows, cross-browser).
+
+Visual regression: Percy, Chromatic, Playwright snapshots.
+
+Accessibility testing: axe-core, Lighthouse audits, axe-playwright/cypress.
+
+Test strategy: small fast unit tests, stable E2E for critical flows, CI gating.
+
+# Performance engineering
+Metrics: FCP, LCP, CLS, TTI, TBT. Use Lighthouse & Web Vitals.
+
+Critical rendering path: minimize render-blocking CSS/JS, defer nonessential resources.
+
+Image optimization: responsive images (srcset), WebP/AVIF, lazy loading (loading="lazy"), modern formats.
+
+Fonts: font-display: swap, preload critical fonts, subset fonts.
+
+Caching & CDN: asset hashing, Cache-Control headers, immutable caching.
+
+Server-side rendering (SSR) & hydration cost — when SSR helps (SEO, performance).
+
+Edge & CDN functions for fast regional responses.
+
+Use profiling tools: devtools performance, lighthouse-ci, FCP/LCP real-user monitoring (RUM).
+
+# Accessibility (A11y) — required for seniors
+Keyboard navigation: focus order, tabindex, visible focus styles.
+
+Semantic HTML basics to support AT (screen readers).
+
+Landmarks, labels, aria-* best practices and pitfalls.
+
+Accessible forms & validation messages (aria-live).
+
+Color contrast, text-size & responsive scaling.
+
+Testing: screen reader testing, keyboard-only flows, automated checks + manual validation.
+
+# Security (frontend concerns)
+XSS prevention: never inject untrusted HTML, use safe APIs or sanitizers (DOMPurify).
+
+CSRF basics for frontend — cookies vs tokens.
+
+HTTPS & secure cookies; Content Security Policy (CSP).
+
+Secure storage: avoid storing secrets in client code; prefer ephemeral tokens via secure flows (OAuth PKCE).
+
+Avoid eval, dynamic script injection, dangerous serialization (unsafe postMessage handling).
+
+# Progressive Web Apps & modern UX
+Service Workers: caching strategies (network-first, cache-first), offline-first design.
+
+App shell architecture, manifest, push notifications.
+
+Installable web apps (PWA) & offline behavior design.
+
+Accessibility & graceful fallback when offline.
+
+# Server-side rendering, SSG, Incremental static regeneration
+Next.js, Nuxt, Gatsby patterns: SSR, SSG, ISR.
+
+Tradeoffs: SEO, first-load performance vs complexity (hydration cost).
+
+Edge rendering & serverless functions (Vercel, Netlify, Cloudflare Workers).
+
+# Browser internals & deep platform knowledge (senior-level)
+How HTML, CSSOM, JS engine, layout, paint, composite interact.
+
+Jank causes: layout thrashing, forced reflow, long tasks.
+
+Memory model: detached DOM nodes, closures leaking memory.
+
+Resource loading order and preconnect/preload.
+
+Spec familiarity: event loop details, pointer events, input event coalescing.
+
+# Advanced architecture & scaling
+Component design systems: tokens, design tokens, theming, Storybook.
+
+Monorepos & package management: Turborepo, pnpm/workspaces, Lerna.
+
+Microfrontends: pros & cons, integration strategies (iframes, module federation, edge composition).
+
+API design & contracts: GraphQL schema ownership, REST versioning, pagination patterns, backpressure handling.
+
+Observability: client-side logging, feature flags, experiments/A-B testing.
+
+# WebAssembly & non-JS runtimes (advanced)
+When to use WASM: CPU-heavy tasks (image processing, codecs), porting existing C/C++ libs.
+
+Interop costs & memory sharing.
+
+Ecosystem: Rust→WASM via wasm-bindgen, tooling considerations.
+
+# Soft skills, product & leadership
+Communication: write good RFCs, PR descriptions, and design docs.
+
+Product sense: measure & improve key metrics (engagement, conversion).
+
+Mentorship: code reviews that teach, pair-programming, technical growth for juniors.
+
+Roadmapping & tradeoff decision: evaluate time-to-value and maintainability.
+
+Stakeholder management: translate technical constraints into product tradeoffs.
+
+# Career path & roles
+Typical ladder: Junior → Mid → Senior → Staff/Principal → Engineering Manager / Architect.
+
+Senior expectations: ownership of features/systems, mentoring, design reviews, reliability & performance leadership.
+
+Staff/Principal: cross-team systems, architecture, high-level technical strategy.
+
+Manager path: focus shifts toward people management, hiring, project prioritization.
+
+# Portfolio, resume & job hunt practicals
+Build 3–5 polished projects showcasing depth: a production-ready web app with SSR, a component library with Storybook, a PWA with offline support, a high-performance dashboard with charts.
+
+GitHub: clean repos, CI badges, README with live demo, deployment link (Netlify/Vercel), clear setup instructions.
+
+Blog/medium posts: explain technical choices, performance work, architecture tradeoffs — shows communication and depth.
+
+Open-source contributions: small PRs, bugfixes to libraries you use — emphasise code quality & collaboration.
+
+Interview prep: coding problems, system design for frontends (how to design large-scale client app, deploy, handle failures), behavioral stories (STAR format).
+
+# Interview & senior-level topics checklist
+Core JS: closures, prototypes, event loop, hoisting.
+
+DOM & browser APIs: event handling, memory leaks, performance profiling.
+
+React or chosen framework internals: reconciliation, hooks rules, concurrency model.
+
+TypeScript typing & design patterns.
+
+Architecture: componentization, state handling, SSR vs CSR, microfrontends.
+
+Testing strategy & examples: unit test a UI component; write an integration test for routing; show E2E test flow.
+
+Real-world debugging examples: explain a past performance bug and remediation (or write a postmortem-style explanation).
+
+System design for frontends: how to architect a dashboard that loads in <1s across regions.
+
+# Practical learning routes & timelines
+On-ramp (0–3 months) — fundamentals
+Learn HTML5 semantics, CSS basics, responsive layouts (Flexbox + Grid).
+
+JavaScript basics: closures, async/await, DOM.
+
+Build small projects: landing page, blog template, responsive card grid.
+
+Tools: Git, VS Code, npm.
+
+Deliverable: deploy a responsive landing page (Netlify/Vercel) with a contact form.
+
+Foundation (3–6 months) — framework & tooling
+Pick a framework (React/Vue) — learn routing, state, component patterns.
+
+TypeScript basics + migrate a small project.
+
+Testing basics: Jest + React Testing Library.
+
+Project: small SPA with authentication (mocked) and REST API.
+
+Deliverable: SPA with auth, unit tests, CI workflow.
+
+Intermediate (6–12 months) — product & production
+Advanced state management and server-state (React Query).
+
+SSR / SSG with Next.js or framework equivalent.
+
+Performance profiling, Lighthouse fixes, accessibility audits.
+
+Build a PWA with offline support and service worker.
+
+Deliverable: E2E tested PWA deployed with CI, logging & basic monitoring.
+
+Advanced (1–3 years) — systems & scale
+Component library + Storybook, design tokens, theming.
+
+Microfrontends/monorepo patterns, module federation.
+
+Observability & client-side performance measurement (RUM).
+
+Build production features with A/B testing & telemetry.
+
+Deliverable: Component library + large app migration plan; production monitoring.
+
+Mastery (3–10 years)
+Architect cross-team frontend systems, global performance initiatives.
+
+Mentoring, design reviews, ownership of frontend platform.
+
+Innovate: adopt edge rendering, WASM for hotspots, advanced offline-first patterns.
+
+# Sample 12-week study plan (practical)
+Week 1–2: HTML & CSS fundamentals, build static landing page.
+Week 3–4: Advanced CSS (Grid, Flexbox), responsive design, accessibility basics.
+Week 5–6: JavaScript core + small interactive widgets (modal, dropdown).
+Week 7–8: React fundamentals + hooks; build small SPA.
+Week 9: TypeScript intro & migration.
+Week 10: Testing: unit tests & component tests.
+Week 11: Performance & Lighthouse fixes; lazy loading images & code split.
+Week 12: Deploy app with CI, write README, prepare portfolio.
+
+# Suggested projects (progression)
+Beginner: Personal portfolio site (HTML/CSS/vanilla JS).
+
+Intermediate: Todo app with persistence (localStorage) and tests.
+
+Intermediate+: Blog with markdown support and SSG (Next.js/Gatsby).
+
+Advanced: E-commerce cart + SSR + payments integration + analytics + A/B tests.
+
+Pro: Component library (design tokens) + Storybook + publishable npm package.
