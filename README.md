@@ -1,4 +1,4 @@
-# 🎓 Smart College Portal
+# 🎓 Smart Portal
 
 An **AI-powered college knowledge portal** built with **Streamlit**, **LlamaIndex**, and **Gemini API** that allows students, teachers, and staff to quickly find answers from uploaded PDFs, text files, and documents.
 
@@ -52,7 +52,7 @@ smart-college-portal/
 ## 🛠 Installation & Setup
 
 ### 1️⃣ Clone the repository
-git clone https://github.com/your-username/smart-college-portal.git
+git clone https://github.com/Prashanth4333/Study-Portal-LlamaIndex.git
 cd smart-college-portal
 
 2️⃣ Create & activate a virtual environment
