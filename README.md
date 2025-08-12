@@ -56,28 +56,36 @@ git clone https://github.com/Prashanth4333/Study-Portal-LlamaIndex.git
 cd smart-college-portal
 
 2️⃣ Create & activate a virtual environment
+
 python -m venv venv
 # On Windows
+
 venv\Scripts\activate
 # On Mac/Linux
+
 source venv/bin/activate
 
 3️⃣ Install dependencies
+
 pip install -r requirements.txt
 
 4️⃣ Set up environment variables
+
 Create a .env file in the root directory:
 
 GOOGLE_API_KEY=your_google_api_key_here
 
 5️⃣ Prepare your data
+
 Organize PDFs and other documents inside the data/ folder, following the subfolder structure.
 
 6️⃣ Run the app
+
 streamlit run app.py
 
 
 🧠 How It Works
+
 File Monitoring – The app tracks changes in the data/ folder using a file snapshot.
 
 Index Building – On first run or when files change, it:
@@ -98,6 +106,7 @@ Results – Only the final, clean text is returned to the user.
 
 
 📦 Dependencies
+
 Main libraries used:
 
 streamlit – UI framework
