@@ -90,7 +90,7 @@ Organize PDFs and other documents inside the data/ folder, following the subfold
 streamlit run app.py
 
 
-##🧠 How It Works
+# 🧠 How It Works
 
 File Monitoring – The app tracks changes in the data/ folder using a file snapshot.
 
@@ -111,7 +111,7 @@ Querying – When you ask a question, the index is searched, and relevant chunks
 Results – Only the final, clean text is returned to the user.
 
 
-##📦 Dependencies
+# 📦 Dependencies
 
 Main libraries used:
 
