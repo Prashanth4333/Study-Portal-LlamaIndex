@@ -1,4 +1,4 @@
-<img width="541" height="409" alt="image" src="https://github.com/user-attachments/assets/e8372813-24ab-47e0-aa9d-7951da27c2dd" /># 🎓 Smart Portal
+# 🎓 Smart Portal
 
 An **AI-powered college knowledge portal** built with **Streamlit**, **LlamaIndex**, and **Gemini API** that allows students, teachers, and staff to quickly find answers from uploaded PDFs, text files, and documents.
 
