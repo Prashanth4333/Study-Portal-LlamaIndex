@@ -1,4 +1,4 @@
-# 🎓 Smart Portal
+<img width="541" height="409" alt="image" src="https://github.com/user-attachments/assets/e8372813-24ab-47e0-aa9d-7951da27c2dd" /># 🎓 Smart Portal
 
 An **AI-powered college knowledge portal** built with **Streamlit**, **LlamaIndex**, and **Gemini API** that allows students, teachers, and staff to quickly find answers from uploaded PDFs, text files, and documents.
 
@@ -47,6 +47,12 @@ smart-college-portal/
 
 
 
+
+<img width="541" height="409" alt="image" src="https://github.com/user-attachments/assets/5b90a8e1-0c28-4e10-9c3c-d78e84c6c9b9" />
+
+
+
+
 ---
 
 ## 🛠 Installation & Setup
@@ -84,7 +90,7 @@ Organize PDFs and other documents inside the data/ folder, following the subfold
 streamlit run app.py
 
 
-🧠 How It Works
+##🧠 How It Works
 
 File Monitoring – The app tracks changes in the data/ folder using a file snapshot.
 
@@ -105,7 +111,7 @@ Querying – When you ask a question, the index is searched, and relevant chunks
 Results – Only the final, clean text is returned to the user.
 
 
-📦 Dependencies
+##📦 Dependencies
 
 Main libraries used:
 
